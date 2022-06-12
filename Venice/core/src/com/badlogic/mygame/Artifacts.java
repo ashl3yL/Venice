@@ -4,20 +4,22 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class Artifacts {
     private Texture artifact;
-    private int numArtifacts;
+    private boolean launched;
 
-    public Artifacts(Texture a, int nA){
+    public Artifacts(Texture a, boolean l) {
         artifact = a;
-        numArtifacts = nA;
+        launched = l;
     }
+
     public Texture getArtifact(){
         return artifact;
     }
-    public int getNumArtifacts(){
-        return numArtifacts;
+    public boolean isLaunched(){
+        return launched;
     }
-    public void Subtract(){
-        numArtifacts--;
+
+    public void Launched(){
+        launched = !launched;
     }
 
 }
