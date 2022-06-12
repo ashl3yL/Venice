@@ -16,14 +16,27 @@ public class Venice extends ApplicationAdapter {
     private Texture gondola;
 	private Texture gondolaL;
     private Texture gondolaR;
+	private Texture map;
 	private Artifacts key;
 	private Artifacts heart;
 	private Artifacts coin;
 	private Artifacts star;
+	private Blocks leftDiag;
+	private Blocks rightDiag;
+	private Blocks solidLog;
+	private Blocks log1;
+	private Blocks log2;
+	private Blocks logDupe;
+    private Blocks logDupe2;
+	private Blocks circle;
+	private Blocks circleDupe;
+    private Blocks circleDupe2;
+    private Blocks pin1;
+    private Blocks pin2;
+    private Blocks pin3;
+
 	//Lists
 	private ArrayList<Artifacts> artifacts;
-	private ArrayList<Texture> queue;
-	private ArrayList<Artifacts> testing;
 	//Coords
 	private int gondolaX;
 	private int gondolaY;
@@ -50,11 +63,11 @@ public class Venice extends ApplicationAdapter {
 		slottedArtifactY = gondolaY + 12;     // artifact into the slot on the gondola
 		toFireArtifactX = slottedArtifactX;
 		toFireArtifactY = slottedArtifactY + 120;
-
 		artifactX = toFireArtifactX;
 		artifactY = toFireArtifactY;
 		speed = 30;
 		//Pngs
+		map = new Texture("map.png");
 		water = new Texture("water.png");
 		gondolaL = new Texture("gondolaRight.png");
         gondolaR = new Texture("gondolaLeft.png");
@@ -63,6 +76,19 @@ public class Venice extends ApplicationAdapter {
 		heart = new Artifacts(new Texture("heart.png"), false);
 		coin = new Artifacts(new Texture("coin.png"), false);
 		star = new Artifacts(new Texture("star.png"), false);
+        leftDiag = new Blocks(new Texture("leftDiag.png"), false, true);
+        rightDiag = new Blocks(new Texture("rightDiag.png"), false, true);
+        solidLog = new Blocks(new Texture("solidlog.png"), false, true);
+        log1 = new Blocks(new Texture("log1.png"), false, false);
+        log2 = new Blocks(new Texture("log2.png"), true, false);
+        logDupe = new Blocks(new Texture("logDupe.png"), false, false);
+        logDupe2 = new Blocks(new Texture("logDupe.png"), true, false);
+        circle = new Blocks(new Texture("circle.png"), true, false);
+        circleDupe = new Blocks(new Texture("circleDupe.png"), true, false);
+        circleDupe2 = new Blocks(new Texture("circleDupe.png"), true, false);
+        pin1 = new Blocks(new Texture("pin1.png"), true, false);
+        pin2 = new Blocks(new Texture("pin2.png"), true, false);
+        pin3 = new Blocks(new Texture("pin3.png"), true, false);
 		//I used cam as a divider idk what it actually does
 		cam = new OrthographicCamera();
 		cam.setToOrtho(false, 1200, 1200);
@@ -94,40 +120,14 @@ public class Venice extends ApplicationAdapter {
 			System.out.println(artifacts.get(i).getArtifact());
 			artifacts.set(random, temp);
 		}
-
-		/* 																idk ill just hold these for now
-		artifacts = new ArrayList<Artifacts>();
-		artifacts.add(new Artifacts(new Texture("key.png"), 1));
-		artifacts.add(new Artifacts(new Texture("heart.png"), 2));
-		artifacts.add(new Artifacts(new Texture("coin.png"), 3));
-		artifacts.add(new Artifacts(new Texture("star.png"), 4));
-		//Making the Lists
-		testing = new ArrayList<Artifacts>();
-		for(int i = 0; i <= artifacts.size() - 1; i++){
-			while(artifacts.get(i).getNumArtifacts() != 0){
-				testing.add(new Artifacts(artifacts.get(i).getArtifact(), false));
-				artifacts.get(i).Subtract();
-			}
-		}
-		System.out.println("Queue Length: " + testing.size()); // should add up 1 + 2 + 3 + 4 = 10
-		// shuffles the queue
-		int random = 0;
-		for(int i = 0; i <= testing.size() - 1; i++){
-			Artifacts temp = testing.get(i);
-			random = (int)(Math.random() * testing.size() - 1);
-			System.out.println(testing.set(i, testing.get(random)));
-			testing.set(random, temp);
-		}
-		 */
-
-
 	}
 	@Override
 	public void render () {
-		ScreenUtils.clear(0, 0, 0.2f, 1);
+		ScreenUtils.clear(0.9f, 0.4f, 0.3f, 1);
 		int length = artifacts.size() - 1;
 		batch.begin();
-		batch.draw(water, -5, 0);
+		batch.draw(map, 33, 0); // Three parts, 0, -600, -1300
+		batch.draw(water, -4, 0);
 		batch.draw(gondola, gondolaX, gondolaY);
 		if(length > -1){
 			if(artifacts.get(length).isLaunched()) {
@@ -190,22 +190,14 @@ public class Venice extends ApplicationAdapter {
 		}
 
 		if(Gdx.input.isKeyPressed(Input.Keys.W)) {
-			if(!(artifacts.get(length).isLaunched())){
-				artifacts.get(length).Launched();
-				artifactX = gondolaX + toFireArtifactX;
-				artifactY = gondolaY + toFireArtifactY;
+			if(length >= 1){
+				if(!(artifacts.get(length).isLaunched())){
+					artifacts.get(length).Launched();
+					artifactX = gondolaX + toFireArtifactX;
+					artifactY = gondolaY + toFireArtifactY;
+				}
 			}
-			/*
-			elapsedTime=(System.nanoTime()-actionBeginTime)/1000000000.0f;
-			if(elapsedTime >  0.2f) {
-				artifacts.get(length).Launched();
-				artifactX = gondolaX + toFireArtifactX;
-				artifactY = gondolaY + toFireArtifactY;
 
-			}
-			actionBeginTime=System.nanoTime();
-
-			 */
 		}
 	}
 
