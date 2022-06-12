@@ -7,6 +7,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.utils.Timer;
 import java.util.*;
 
 public class Venice extends ApplicationAdapter {
@@ -23,6 +24,8 @@ public class Venice extends ApplicationAdapter {
 	private int slottedArtifactY;
 	private int toFireArtifactX;
 	private int toFireArtifactY;
+	float elapsedTime;
+	long actionBeginTime;
 	private OrthographicCamera cam;
 
 
@@ -53,20 +56,28 @@ public class Venice extends ApplicationAdapter {
 				artifacts.get(i).Subtract();
 			}
 		}
-		System.out.print("Queue Length: " + queue.size());
+		System.out.println("Queue Length: " + queue.size());
+		int random = 0;
+		for(int i = 0; i <= queue.size() - 1; i++){
+			Texture temp = queue.get(i);
+			random = (int)(Math.random() * queue.size() - 1);
+			System.out.println(queue.set(i, queue.get(random)));
+			queue.set(random, temp);
+		}
 
 
 	}
-
 	@Override
 	public void render () {
 		ScreenUtils.clear(0, 0, 0.2f, 1);
+		int length = queue.size() - 1;
 		batch.begin();
 		batch.draw(water, -5, 0);
 		batch.draw(gondola, gondolaX, gondolaY);
-		batch.draw(queue.get(0), gondolaX + slottedArtifactX, gondolaY + slottedArtifactY);
-		batch.draw(queue.get(2), gondolaX + toFireArtifactX, gondolaY + toFireArtifactY);
+		batch.draw(queue.get(length), gondolaX + slottedArtifactX, gondolaY + slottedArtifactY);
+		batch.draw(queue.get(length - 1), gondolaX + toFireArtifactX, gondolaY + toFireArtifactY);
 		batch.end();
+
 		//boat move and no go off screen
 		if(Gdx.input.isKeyPressed(Input.Keys.A)) {
             gondola = gondolaL;
@@ -80,8 +91,17 @@ public class Venice extends ApplicationAdapter {
 				gondolaX = gondolaX + 20;
 			}
 		}
+		if(Gdx.input.isKeyPressed(Input.Keys.S)) {
+			elapsedTime=(System.nanoTime()-actionBeginTime)/1000000000.0f; // time between the last "S" click and the new one
+			if(elapsedTime >  0.05f){ // sets a delay so it doesnt swap a stupid large number of times
+				Texture temp = queue.get(length);
+				queue.set(length, queue.get(length - 1));
+				queue.set(length - 1, temp);
+			}
+			actionBeginTime=System.nanoTime();// marks the time after the last "S" click
+		}
+
 		//if(Gdx.input.isKeyPressed(Input.Keys.W)) //fire
-		//if(Gdx.input.isKeyPressed(Input.Keys.S)) //swap
 	}
 
 	@Override
