@@ -10,9 +10,8 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setForegroundFPS(60);
 		config.setTitle("Venice");
-		config.setWindowedMode(1000,1000);
+		config.setWindowedMode(1200,1200);
 		config.useVsync(true);
-
 		new Lwjgl3Application(new Venice(), config);
 	}
 }
