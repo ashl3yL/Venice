@@ -95,19 +95,19 @@ public class Venice extends ApplicationAdapter {
 		//Artifact List
 		artifacts = new ArrayList<Artifacts>();
 		int total = 0;
-		for(int k = 0; k <= 0; k++){			// one key
+		for(int k = 0; k <= 12; k++){			// 13 keys
 			artifacts.add(key);
 			total++;
 		}
-		for(int h = 0; h <= 1; h++){			// two hearts
+		for(int h = 0; h <= 15; h++){			// 16 hearts
 			artifacts.add(heart);
 			total++;
 		}
-		for(int c = 0; c <= 2; c++){			// three coins
+		for(int c = 0; c <= 12; c++){			// 13 coins
 			artifacts.add(coin);
 			total++;
 		}
-		for(int s = 0; s <= 3; s++){			// four stars
+		for(int s = 0; s <= 11; s++){			// 12 stars
 			artifacts.add(star);
 			total++;
 		}
